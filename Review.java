@@ -277,4 +277,8 @@ public class Review {
       return false;
     }
   }
+
+  public static double SuperTotalSentiment(String fileName){
+    return totalSentiment(fileName) + totalSentimentWithDoubleNeg(fileName);
+  }
 }
