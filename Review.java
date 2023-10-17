@@ -246,15 +246,17 @@ public class Review {
     double prevScore = 0;
     String review = textToString(fileName);
     String[] words = review.split(" ");
-    System.out.println(Arrays.toString(words));
+    //System.out.println(Arrays.toString(words));
     ArrayList<Double> sentimentalValues = new ArrayList<Double>();
     double total = 0;
     prevScore = sentimentVal(words[0]);
     for (int i = 0; i < words.length; i++) {
-      System.out.println(words[i]);
-        if((prevScore < 0 && sentimentVal(words[i]) < 0) || (sentimentVal(words[i]) < 0 && words[i-1].equals("not")))
+      //System.out.println(words[i]);
+      if((prevScore < 0 && sentimentVal(words[i]) < 0) || (sentimentVal(words[i]) < 0 && YesDoubler(words[i-1])) || (sentimentVal(words[i]) < 0 && words[i-1].equals("not")))
       {
           sentimentalValues.add(sentimentVal(words[i]) * -4);
+      } else{
+        sentimentalValues.add(sentimentVal(words[i]));
       }
     }
 
@@ -263,5 +265,17 @@ public class Review {
       // System.out.println(sentimentalValues.get(i));
     }
     return total/sentimentalValues.size();
+  }
+
+  private static boolean YesDoubler(String input){
+    //System.out.println(input.substring(input.length()-3, input.length()));
+    if (input.length() < 3){
+      return false;
+    }
+    if (input.substring(input.length()-3, input.length()).equals("n't")){  
+      return true;
+    } else{
+      return false;
+    }
   }
 }
