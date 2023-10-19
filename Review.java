@@ -286,7 +286,7 @@ public class Review {
   }
 
   public static double SuperTotalSentiment(String fileName){
-    return totalSentiment(fileName) + totalSentimentWithDoubleNeg(fileName);
+    return totalSentimentWithDoubleNeg(fileName) + totalSentimentWithoutRepeatWords(fileName); 
   }
 
   public static double totalSentimentWithoutRepeatWords(String fileName) {
