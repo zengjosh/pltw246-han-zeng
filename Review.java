@@ -289,5 +289,48 @@ public class Review {
     return totalSentiment(fileName) + totalSentimentWithDoubleNeg(fileName);
   }
 
-  
+  public static double totalSentimentWithoutRepeatWords(String fileName) {
+    String review = textToString(fileName);
+    String[] words = review.split(" ");
+    ArrayList<String> sentimentWords = new ArrayList<String>(Arrays.asList(words));
+    ArrayList<Double> sentimentalValues = new ArrayList<Double>();
+    ArrayList<Integer> removeIndex = new ArrayList<Integer>();
+    double total = 0;
+    
+    for (int i = 0; i < sentimentWords.size(); i++) {
+      sentimentWords.set(i, (sentimentWords.get(i)).replace(",", ""));
+      sentimentWords.set(i, (sentimentWords.get(i)).replace(".", ""));
+    }  
+
+    for (int i = 0; i < sentimentWords.size(); i++) {
+      for (int j = 0; j < sentimentWords.size(); j++) {
+        if (i != j) {
+          if (sentimentWords.get(i).equals(sentimentWords.get(j))) {
+            removeIndex.add(i);
+            removeIndex.add(j);
+          }
+        }
+      }
+    }
+
+    for (int i = 0; i < (removeIndex.size()/2)+1; i++) {
+      removeIndex.remove(i);
+    }
+
+    for (int i = 0; i < removeIndex.size()/2; i++) {
+      int temp = removeIndex.get(i);
+      sentimentWords.remove(temp);
+    }
+
+    for (String word : sentimentWords) {
+      if (Review.sentimentVal(word) != 0) {
+        sentimentalValues.add(Review.sentimentVal(word));
+      }
+    }
+    
+    for (int i = 0; i < sentimentalValues.size(); i++) {
+      total += sentimentalValues.get(i);
+    }
+    return (total/sentimentalValues.size());
+  }
 }
