@@ -288,4 +288,6 @@ public class Review {
   public static double SuperTotalSentiment(String fileName){
     return totalSentiment(fileName) + totalSentimentWithDoubleNeg(fileName);
   }
+
+  
 }
