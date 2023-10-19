@@ -160,6 +160,7 @@ public class Review {
 
   public static double totalSentiment(String fileName) {
     String review = textToString(fileName);
+    review = Review.removePunctuation(review);
     String[] words = review.split(" ");
     ArrayList<String> sentimentWords = new ArrayList<String>(Arrays.asList(words));
     ArrayList<Double> sentimentalValues = new ArrayList<Double>();
@@ -174,7 +175,8 @@ public class Review {
     for (int i = 0; i < sentimentalValues.size(); i++) {
       total += sentimentalValues.get(i);
     }
-    return total/sentimentalValues.size();
+    System.out.println(total);
+    return total;
   }
 
   public static int starRating(String review) {
@@ -244,18 +246,21 @@ public class Review {
 
   public static double totalSentimentWithDoubleNeg(String fileName){
     String review = textToString(fileName);
+    review = Review.removePunctuation(review).replace(",", " ");
     String[] words = review.split(" ");
     //System.out.println(Arrays.toString(words));
     ArrayList<Double> sentimentalValues = new ArrayList<Double>();
     double total = 0;
 
-    double prevScore = 0;
-    prevScore = sentimentVal(words[0]);
-    for (int i = 0; i < words.length; i++) {
+    for (int i = 1; i < words.length; i++) {
       //System.out.println(words[i]);
-      if((prevScore < 0 && sentimentVal(words[i]) < 0) || (sentimentVal(words[i]) < 0 && YesDoubler(words[i-1])) || (sentimentVal(words[i]) < 0 && words[i-1].equals("not")))
+      if((sentimentVal(words[i-1]) < -1 && sentimentVal(words[i]) < -1))
       {
-          sentimentalValues.add(sentimentVal(words[i]) * -4);
+          System.out.println(words[i-1] + " " + words[i] + " " + sentimentVal(words[i]) * -3);
+          sentimentalValues.add(sentimentVal(words[i]) * -3);
+      } else if ((YesDoubler(words[i-1])) || (sentimentVal(words[i]) < 0 && words[i-1].equals("not"))){
+        System.out.println(words[i-1] + " " + words[i] + " " + sentimentVal(words[i]) * -3);
+        sentimentalValues.add(Math.abs(sentimentVal(words[i])) * -3);
       }
     }
 
@@ -263,6 +268,8 @@ public class Review {
       total += sentimentalValues.get(i);
       // System.out.println(sentimentalValues.get(i));
     }
+
+    System.out.println(total);
     return total;
   }
 
